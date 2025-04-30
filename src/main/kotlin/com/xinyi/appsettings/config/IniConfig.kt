@@ -1,6 +1,5 @@
 package com.xinyi.appsettings.config
 
-import com.xinyi.appsettings.processor.create.CmakeFile
 import com.xinyi.appsettings.processor.create.CreateAppSettingCppFile
 import com.xinyi.appsettings.processor.create.CreateAppSettingHFile
 import com.xinyi.appsettings.processor.create.CreateClassCppFile
@@ -11,7 +10,6 @@ import com.xinyi.appsettings.processor.create.CreateIgnore
 import com.xinyi.appsettings.processor.create.CreateTypeFile
 import org.w3c.dom.Element
 import org.w3c.dom.NodeList
-import javax.xml.transform.Source
 
 class IniConfig : Cloneable {
 

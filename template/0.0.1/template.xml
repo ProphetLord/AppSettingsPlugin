@@ -15,6 +15,6 @@
         <item name="typeConfig" type="TypeConfig" note="type配置"/>
         <item name="theme" type="ThemeStyle" note="主题" default="ThemeStyle::Dark"/>
         <item name="test1" type="qint64" note="测试1"/>
-        <item name="test2" type="QString" note="测试2"/>
+        <item name="test2" type="QString" default="Test2" note="测试2"/>
     </class>
 </settings>

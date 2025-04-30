@@ -1,6 +1,5 @@
 package com.xinyi.appsettings.processor.create
 
-import com.xinyi.appsettings.config.DataCacheHandler
 import com.xinyi.appsettings.config.DataConfig
 import com.xinyi.appsettings.config.SourceFileData
 import com.xinyi.appsettings.processor.AbstractProcessor
@@ -21,7 +20,11 @@ namespace $nameSpace {
             if (item.default.isEmpty()) {
                 "$configName<${item.type}, ${dataConfig.name}::g> ${dataConfig.name}::${item.name}(\"${item.name}\");"
             } else {
-                "$configName<${item.type}, ${dataConfig.name}::g> ${dataConfig.name}::${item.name}(\"${item.name}\", ${item.default});"
+                if (item.type == "QString" || item.type == "QByteArray") {
+                    "$configName<${item.type}, ${dataConfig.name}::g> ${dataConfig.name}::${item.name}(\"${item.name}\", \"${item.default}\");"
+                } else {
+                    "$configName<${item.type}, ${dataConfig.name}::g> ${dataConfig.name}::${item.name}(\"${item.name}\", ${item.default});"
+                }
             }
         }
     }

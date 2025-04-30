@@ -9,46 +9,46 @@ data class EnumsFile(
     val dataConfig: DataConfig
 ) {
     val template = """
-        #pragma once
+#pragma once
 
-        #include <qobject.h>
-        #include <qdatastream.h>
-        #include <qdebug.h>
+#include <qobject.h>
+#include <qdatastream.h>
+#include <qdebug.h>
 
-        namespace $nameSpace {
-            enum ${dataConfig.name} {
-                ${
-                    dataConfig.toNameList().joinToString("\n\t\t") { item ->
-                        item 
-                    }
-                }
-            };
-        }
-
-        Q_DECLARE_METATYPE($nameSpace::${dataConfig.name})
-
-        inline QDataStream& operator<<(QDataStream &out, const $nameSpace::${dataConfig.name}& data) {
-            return out << (int)data;
-        }
-
-        inline QDataStream& operator>>(QDataStream &in, $nameSpace::${dataConfig.name}& data) {
-            int tmp;
-            in >> tmp;
-            data = $nameSpace::${dataConfig.name}(tmp);
-            return in;
-        }
-
-        inline QDebug operator<<(QDebug debug, const $nameSpace::${dataConfig.name}& data) {
-            QDebugStateSaver saver(debug);
-            switch(data) {
-                ${
-                    dataConfig.toNameList().joinToString("\n\t\t") { item ->
-                        "case $nameSpace::${dataConfig.name}::$item: debug.nospace() << \"$item\""
-                    }
-                }
+namespace $nameSpace {
+    enum ${dataConfig.name} {
+        ${
+            dataConfig.toNameList().joinToString(",\n\t\t") { item ->
+                item 
             }
-            return debug;
         }
+    };
+}
+
+Q_DECLARE_METATYPE($nameSpace::${dataConfig.name})
+
+inline QDataStream& operator<<(QDataStream &out, const $nameSpace::${dataConfig.name}& data) {
+    return out << (int)data;
+}
+
+inline QDataStream& operator>>(QDataStream &in, $nameSpace::${dataConfig.name}& data) {
+    int tmp;
+    in >> tmp;
+    data = $nameSpace::${dataConfig.name}(tmp);
+    return in;
+}
+
+inline QDebug operator<<(QDebug debug, const $nameSpace::${dataConfig.name}& data) {
+    QDebugStateSaver saver(debug);
+    switch(data) {
+        ${
+            dataConfig.toNameList().joinToString("\n\t\t") { item ->
+                "case $nameSpace::${dataConfig.name}::$item: debug.nospace() << \"$item\";"
+            }
+        }
+    }
+    return debug;
+}
     """.trimIndent()
 }
 
