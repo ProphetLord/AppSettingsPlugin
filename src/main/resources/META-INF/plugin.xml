@@ -1,0 +1,29 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>com.xinyi.appsettings</id>
+    <name>AppSettingsPlugin</name>
+    <vendor>JetBrains</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+
+<!--    <resource-bundle>messages.MyBundle</resource-bundle>-->
+
+    <extensions defaultExtensionNs="com.intellij">
+<!--        <toolWindow factoryClass="org.jetbrains.plugins.template.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>-->
+<!--        <postStartupActivity implementation="org.jetbrains.plugins.template.startup.MyProjectActivity" />-->
+
+        <notificationGroup displayType="BALLOON" id="AppSettings notifications" bundle="messages.AppSettingBundle"
+                           key="app.group.notification"/>
+    </extensions>
+
+    <actions>
+        <action id="PopupAction_ID"
+                icon="AllIcons.Actions.ListFiles"
+                class="com.xinyi.appsettings.actions.PopupAction"
+                text="生成Settings配置文件"
+                description="创建Settings格式文件">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+
+</idea-plugin>

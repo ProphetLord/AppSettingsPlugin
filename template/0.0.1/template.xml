@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings ini="appsettings.ini" namespace="AppSetting" cmakeName="APP_SETTING_SRC" version="1.0">
+    <enums name="ThemeStyle">
+        <item>Dark</item>
+        <item>Light</item>
+    </enums>
+
+    <type name="TypeConfig">
+        <item name="config1" type="bool" default="false" note="Type配置1"/>
+        <item name="config2" type="int" default="1" note="Type配置2"/>
+        <item name="config3" type="qreal" default="1" note="Type配置3"/>
+    </type>
+
+    <class name="ClassConfig">
+        <item name="typeConfig" type="TypeConfig" note="type配置"/>
+        <item name="theme" type="ThemeStyle" note="主题" default="ThemeStyle::Dark"/>
+        <item name="test1" type="qint64" note="测试1"/>
+        <item name="test2" type="QString" note="测试2"/>
+    </class>
+</settings>
