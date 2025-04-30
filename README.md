@@ -1,5 +1,9 @@
 # IntelliJ Platform Plugin Template
 
+
+> [!NOTE]
+> The generated Settings file is used for Qt project and is based on the basic configuration file in the. /template/listener directory. Please copy all the files before using it.
+
 <!-- Plugin description -->
 **AppSettings Plugin Template** is a tool plug-in based on the Clion code tool to quickly generate Qt configuration files.
 
