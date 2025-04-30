@@ -5,14 +5,10 @@
 
 By configuring the xml file and creating a field group according to the specified format requirements, right-click in the xml file and **Generate Settings Configuration File** to generate the corresponding configuration file in the current xml directory.([GitHub address][github:template])
 
-[github:template]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
+[github:template]: https://github.com/ProphetLord/AppSettingsPlugin
 <!-- Plugin description end -->
 
 The current project is based on ** [Intellij Platform Plugin Template][Intellij_Template] **
-
-
-[Intellij_Template]: https://github.com/JetBrains/intellij-platform-plugin-template
-
 
 ### xml Configuration File Description
 
@@ -33,4 +29,5 @@ The following describes the configuration fields and how to use them:
 | `type`                   | Create a custom type structure, which has a special item on the dialog box: **Type class setting Addr**, which will generate an enumeration of Addr. The field type in this item contains the set enums item. |
 | `class`                  | Create a static data Type, which can contain items: type, enums.                                                                                                                                              |
 
+[Intellij_Template]: https://github.com/JetBrains/intellij-platform-plugin-template
 [file:template.xml]: ./template/0.0.1/template.xml
