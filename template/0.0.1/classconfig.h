@@ -2,8 +2,8 @@
 
 #include "appsettings.h"
 
-#inlucde "typeconfig.h"
-#inlucde "themestyle.h"
+#include "typeconfig.h"
+#include "themestyle.h"
 
 namespace AppSetting {
     struct ClassConfig

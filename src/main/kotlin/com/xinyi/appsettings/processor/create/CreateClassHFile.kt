@@ -8,7 +8,8 @@ import com.xinyi.appsettings.processor.AbstractProcessor
 data class ClassH(
     val configClassName: String,
     val namespaceName: String,
-    val dataConfig: DataConfig
+    val dataConfig: DataConfig,
+    val includeList: String
 ) {
     val template = """
 #pragma once
@@ -18,12 +19,13 @@ data class ClassH(
 ${
     dataConfig.items.mapNotNull { item ->
         if (DataCacheHandler.cacheTypes.contains(item.type) || DataCacheHandler.cacheEnums.contains(item.type)) {
-            "#inlucde \"${item.type.lowercase()}.h\""
+            "#include \"${item.type.lowercase()}.h\""
         } else {
             null
         }
     }.joinToString("\n")
 }
+$includeList
 
 namespace $namespaceName {
     struct ${dataConfig.name}
@@ -32,7 +34,7 @@ namespace $namespaceName {
 
         ${
             dataConfig.items.joinToString("\n\t\t") { item ->
-                "static $configClassName<${item.type}, g> ${item.name};"
+                "static $configClassName<${item.type}, g> ${item.name};\t//${item.note}"
             }
         }
         
@@ -46,10 +48,18 @@ namespace $namespaceName {
 class CreateClassHFile : AbstractProcessor() {
 
     override fun getData(sourceFileData: SourceFileData): String {
+        val includeString = mutableListOf<String>()
+        for (item in sourceFileData.getDataConfig().items) {
+            if (item.includeDir.isNotEmpty()) {
+               includeString.add("#include <${item.includeDir}>")
+            }
+        }
+
         val context = ClassH(
             sourceFileData.getConfigClassName(),
             sourceFileData.getNamespaceName(),
-            sourceFileData.getDataConfig()
+            sourceFileData.getDataConfig(),
+            includeString.joinToString("\n")
         ).template
 
         return context

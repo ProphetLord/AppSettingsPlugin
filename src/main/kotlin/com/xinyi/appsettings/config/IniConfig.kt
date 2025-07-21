@@ -46,8 +46,9 @@ class IniConfig : Cloneable {
             val itemType = itemNode.getAttribute("type")
             val itemDefault = itemNode.getAttribute("default")
             val itemNote = itemNode.getAttribute("note")
+            val itemInclude = itemNode.getAttribute("include")
 
-            var config = ItemDataConfig(itemName, itemType, itemDefault, itemNote)
+            var config = ItemDataConfig(itemName, itemType, itemDefault, itemNote, itemInclude)
             itemList.add(config)
         }
         val dataConfig = DataConfig(typeNodeName, addr, itemList)
@@ -61,9 +62,13 @@ class IniConfig : Cloneable {
         val types = node.getElementsByTagName("item")
         for(j in 0 until types.length) {
             val itemNode = types.item(j) as Element
-            val itemName = itemNode.textContent
+            var itemName = itemNode.getAttribute("name")
+            if(itemName.isEmpty()) {
+                itemName = itemNode.textContent
+            }
+            val itemDefault = itemNode.getAttribute("default")
 
-            itemList.add(ItemDataConfig(itemName, "", "", ""))
+            itemList.add(ItemDataConfig(itemName, "", itemDefault, "", ""))
         }
         val dataConfig = DataConfig(typeNodeName, "", itemList)
         return dataConfig
@@ -115,7 +120,7 @@ class IniConfig : Cloneable {
 
         // 创建appsettings.cpp
         val createAppSettingCpp = CreateAppSettingCppFile()
-        val filePathCpp = "$fileDir/${namespaceName.lowercase()}.cpp"
+        val filePathCpp = "$fileDir/${configClass.lowercase()}.cpp"
         val appFileDataCpp = SourceFileData(filePathCpp, configClass, namespaceName,
             DataConfig(configClass, "", mutableListOf()))
         createAppSettingCpp.process(appFileDataCpp)

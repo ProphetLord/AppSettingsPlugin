@@ -7,7 +7,5 @@ data class ItemDataConfig (
     var note : String,
 
     // TODO:以下属性需要在对话框中设置才能生效,待开发
-    var defaultDir: String = "",
-    var container: String = "",
-    var special: String = "",
+    var includeDir: String,
 )

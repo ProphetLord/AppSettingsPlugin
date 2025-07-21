@@ -9,7 +9,8 @@ import com.xinyi.appsettings.config.SourceFileData
 data class TypeFile(
     val nameSpace: String,
     val dataConfig: DataConfig,
-    val memberList: String
+    val memberList: String,
+    val includeList: String
 ) {
     val template = """
 #pragma once
@@ -17,11 +18,13 @@ data class TypeFile(
 #include <qobject.h>
 #include <qdatastream.h>
 #include <qdebug.h>
+
 ${
     DataCacheHandler.cacheEnums.joinToString("\n") { item ->
-        "#include \"${item.lowercase()}\""
+        "#include \"${item.lowercase()}.h\""
     }
 }
+$includeList
 
 namespace $nameSpace {
     struct ${dataConfig.name}
@@ -54,7 +57,7 @@ namespace $nameSpace {
 inline QDataStream& operator<<(QDataStream &out, const $nameSpace::${dataConfig.name}& data) {
     return out ${
         dataConfig.toNameList().joinToString("\n" + " ".repeat(15)) { item ->
-            "<< $item"
+            "<< data.$item"
         }
     };
 }
@@ -62,7 +65,7 @@ inline QDataStream& operator<<(QDataStream &out, const $nameSpace::${dataConfig.
 inline QDataStream& operator>>(QDataStream &in, $nameSpace::${dataConfig.name}& data) {
     return in ${
         dataConfig.toNameList().joinToString("\n" + " ".repeat(14)) { item ->
-            ">> $item"
+            ">> data.$item"
         }
     };
 }
@@ -85,18 +88,29 @@ Q_DECLARE_METATYPE($nameSpace::${dataConfig.name})
 class CreateTypeFile: AbstractProcessor() {
 
     override fun getData(sourceFileData: SourceFileData): String {
-        var memberList = mutableListOf<String>()
+        val memberList = mutableListOf<String>()
+        val includeString = mutableListOf<String>()
         for (item in sourceFileData.getDataConfig().items) {
             memberList.add(if (item.default.isEmpty()) {
-                "${item.type} ${item.name};"
+                "${item.type} ${item.name};\t//${item.note}"
             } else {
-                "${item.type} ${item.name} = ${item.default};"
+                if (item.type == "QString" || item.type == "QByteArray") {
+                    "${item.type} ${item.name} = \"${item.default}\";\t//${item.note}"
+                } else {
+                    "${item.type} ${item.name} = ${item.default};\t//${item.note}"
+                }
             })
+
+            if (item.includeDir.isNotEmpty()) {
+                includeString.add("#include <${item.includeDir}>")
+            }
         }
+
         return TypeFile(
             nameSpace = sourceFileData.getNamespaceName(),
             dataConfig = sourceFileData.getDataConfig(),
-            memberList = memberList.joinToString("\n\t\t")
+            memberList = memberList.joinToString("\n\t\t"),
+            includeList = includeString.joinToString("\n")
         ).template
     }
 }

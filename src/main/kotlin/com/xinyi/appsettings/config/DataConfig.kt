@@ -12,4 +12,16 @@ data class DataConfig(
         }
         return list
     }
+
+    fun toItemValues(): List<String> {
+        val list = mutableListOf<String>()
+        items.forEach { config ->
+            if (config.default.isNotEmpty())  {
+                list.add(config.name + " = " + config.default)
+            } else {
+                list.add(config.name)
+            }
+        }
+        return list
+    }
 }

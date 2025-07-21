@@ -18,7 +18,7 @@ data class EnumsFile(
 namespace $nameSpace {
     enum ${dataConfig.name} {
         ${
-            dataConfig.toNameList().joinToString(",\n\t\t") { item ->
+            dataConfig.toItemValues().joinToString(",\n\t\t") { item ->
                 item 
             }
         }
